@@ -92,6 +92,14 @@ JUDGE_MODEL=claude-haiku-4-5-20251001 npm run calibrate    # Haiku
 崩一次代价是整局。`ANTHROPIC_API_KEY` 填错时整个游戏仍然可玩（全判无关），
 这是故意的。
 
+## Session 在哪
+
+`render.yaml` 里声明了一个免费的 Key Value（Redis），`REDIS_URL` 自动注入。
+每次部署进程重启，session 不会丢——玩家玩到一半不会再被「这局已过期」。
+本地不设 `REDIS_URL` 就走内存，零配置。Redis 连不上会退回内存并打警告，不会卡死启动。
+
+万一还是撞上过期（比如你手动改了 Redis），前端会自动用同一道题重开一局，不会卡住。
+
 ## 已经做了的防护
 
 - `/api/ask` 和 `/api/start` 都有按 IP 的令牌桶限流（20 次突发，6 秒回一次）
@@ -102,8 +110,8 @@ JUDGE_MODEL=claude-haiku-4-5-20251001 npm run calibrate    # Haiku
 
 ## 已知未做
 
-- **session 和限流都存在内存里**，Render 重启或多实例就丢。上线前换 Redis / KV。
-  两个 Map 都刻意写得接口很窄，换起来各二十行。
+- **限流存在内存里**，多实例时各限各的。session 已经走 Redis 了（`sessions.js`），
+  限流要的话照着改。
 - **没有 Anthropic 消费上限。** 去 Console → Billing 设一个，那是最后一道保险。
 - **谜题只有 3 题。** 见下。
 

@@ -4,10 +4,12 @@ import { PUZZLES, byId, publicView } from "./puzzles.js";
 import { loadPool, pickFor, fingerprint, daily, poolSize } from "./pool.js";
 import { startTopUp } from "./topup.js";
 import { adjudicate, reportAuth } from "./adjudicator.js";
+import { openSessionStore } from "./sessions.js";
 
 reportAuth();
 await loadPool();          // 把验证通过的生成题并入题库
 startTopUp();              // AUTO_GENERATE=1 时后台补货
+const sessions = await openSessionStore();   // Redis 或内存，见 sessions.js
 
 const app = express();
 // Render 在反向代理后面，不设这个拿到的 IP 全是代理的
@@ -52,23 +54,6 @@ setInterval(() => {
   for (const [ip, b] of buckets) if (b.last < cutoff) buckets.delete(ip);
 }, 1000 * 60 * 10).unref();
 
-const sessions = new Map();
-const TTL = 1000 * 60 * 60 * 3;
-// 上限：超过就淘汰最久没动的。没有这个，一个脚本能无限开局把内存撑爆。
-const MAX_SESSIONS = 5000;
-
-function evictIfFull() {
-  if (sessions.size < MAX_SESSIONS) return;
-  let oldest = null, oldestAt = Infinity;
-  for (const [id, s] of sessions) if (s.touched < oldestAt) { oldest = id; oldestAt = s.touched; }
-  if (oldest) sessions.delete(oldest);
-}
-
-setInterval(() => {
-  const now = Date.now();
-  for (const [id, s] of sessions) if (now - s.touched > TTL) sessions.delete(id);
-}, 1000 * 60 * 10).unref();
-
 // 每局结束打一行结构化日志。Render Logs 里 grep "finish" 就能看：
 // 哪道题被弃得多、平均几问通关、提示用了几次。这是你迭代题库的唯一数据来源。
 function logFinish(s, puzzle, outcome) {
@@ -89,7 +74,7 @@ app.get("/api/puzzles", (_req, res) => {
   })));
 });
 
-app.post("/api/start", rateLimit, (req, res) => {
+app.post("/api/start", rateLimit, async (req, res) => {
   const { puzzleId, mode } = req.body || {};
   const fp = fingerprint(req);
 
@@ -105,11 +90,10 @@ app.post("/api/start", rateLimit, (req, res) => {
     else puzzle = picked;
   }
 
-  evictIfFull();
+  if (await sessions.size() >= 5000) await sessions.evictOldest();
   const sid = crypto.randomUUID();
-  sessions.set(sid, {
-    puzzleId: puzzle.id, hit: [], history: [],
-    hintsUsed: 0, over: false, touched: Date.now()
+  await sessions.set(sid, {
+    puzzleId: puzzle.id, hit: [], history: [], hintsUsed: 0, over: false
   });
   res.json({
     sessionId: sid,
@@ -121,15 +105,15 @@ app.post("/api/start", rateLimit, (req, res) => {
 
 app.post("/api/ask", rateLimit, async (req, res) => {
   const { sessionId, question } = req.body || {};
-  const s = sessions.get(sessionId);
+  const s = sessionId ? await sessions.get(sessionId) : null;
   if (!s) return res.status(404).json({ error: "session_expired" });
   if (s.over) return res.status(409).json({ error: "game_over" });
 
   const q = String(question || "").trim().slice(0, 200);
   if (!q) return res.status(400).json({ error: "empty_question" });
 
-  s.touched = Date.now();
   const puzzle = byId(s.puzzleId);
+  if (!puzzle) return res.status(404).json({ error: "session_expired" });
 
   // 原句重复提问：直接回之前的裁定，不再打 API。
   // 省钱，而且避免同一句话两次得到不同答案。
@@ -154,6 +138,7 @@ app.post("/api/ask", rateLimit, async (req, res) => {
     s.over = true;
     logFinish(s, puzzle, "solved");
   }
+  await sessions.set(sessionId, s);
 
   res.json({
     verdict: out.verdict,
@@ -169,23 +154,28 @@ app.post("/api/ask", rateLimit, async (req, res) => {
   });
 });
 
-app.post("/api/hint", (req, res) => {
-  const s = sessions.get(req.body?.sessionId);
+app.post("/api/hint", async (req, res) => {
+  const sid = req.body?.sessionId;
+  const s = sid ? await sessions.get(sid) : null;
   if (!s) return res.status(404).json({ error: "session_expired" });
   const puzzle = byId(s.puzzleId);
+  if (!puzzle) return res.status(404).json({ error: "session_expired" });
   if (s.hintsUsed >= puzzle.hints.length) {
     return res.status(409).json({ error: "no_more_hints" });
   }
   const hint = puzzle.hints[s.hintsUsed++];
-  s.touched = Date.now();
+  await sessions.set(sid, s);
   res.json({ hint, hintsUsed: s.hintsUsed, totalHints: puzzle.hints.length });
 });
 
-app.post("/api/giveup", (req, res) => {
-  const s = sessions.get(req.body?.sessionId);
+app.post("/api/giveup", async (req, res) => {
+  const sid = req.body?.sessionId;
+  const s = sid ? await sessions.get(sid) : null;
   if (!s) return res.status(404).json({ error: "session_expired" });
   const puzzle = byId(s.puzzleId);
+  if (!puzzle) return res.status(404).json({ error: "session_expired" });
   s.over = true;
+  await sessions.set(sid, s);
   logFinish(s, puzzle, "gaveup");
   res.json({ solution: puzzle.solution, asked: s.history.length, gaveUp: true });
 });

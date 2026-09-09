@@ -12,7 +12,18 @@ services:
         sync: false     # 在 Render 后台手填，绝不进仓库
       - key: ANTHROPIC_WORKSPACE_ID
         sync: false     # 只有跨 workspace 的 key 才需要；绑定单一 workspace 的留空
+      - key: REDIS_URL
+        fromService:    # 下面那个 Key Value 的内网地址，自动注入
+          type: keyvalue
+          name: haigui-sessions
+          property: connectionString
       - key: MODEL
         value: claude-sonnet-5
       - key: NODE_VERSION
         value: "20"
+
+  - type: keyvalue
+    name: haigui-sessions
+    plan: free          # 25MB，session 用不完
+    region: oregon
+    maxmemoryPolicy: allkeys-lru

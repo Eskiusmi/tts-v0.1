@@ -8,6 +8,7 @@ export const PUZZLES = [
   ...AUTHORED,
   {
     id: "xuanguan-tuoxie",
+    core: "摆拖鞋的是雇来的保洁，这家人已经去世，有人付钱让房子保持原样。",
     locale: "zh",
     broth: "清汤",
     genre: "本格",
@@ -49,6 +50,7 @@ export const PUZZLES = [
 
   {
     id: "tangge",
+    core: "堂亲必然同姓，而那个人和相亲对象不同姓，所以对方在撒谎。",
     locale: "zh",
     broth: "清汤",
     genre: "本格",
@@ -89,6 +91,7 @@ export const PUZZLES = [
 
   {
     id: "liangbaizhang",
+    core: "妻子记不住自己写过，每天重写同一张；他一张都没扔。",
     locale: "zh",
     broth: "清汤",
     genre: "本格",

@@ -186,7 +186,7 @@ const I18N = {
     keyHit: (h, t) => `想到了一个关键点（${h}/${t}）`,
     cached: "这句问过了，答案不变。",
     degraded: "裁判暂时联系不上，这一问没有被真正裁定。",
-    expired: "这局已经过期了，请重开一题。",
+    expired: "服务刚重启过，这局重新开始。题目不变。",
     tooFast: "问得太快了，缓一下再问。",
     netErr: "网络出了点问题，再问一次。",
     bootErr: "盛汤失败，刷新试试。",
@@ -335,8 +335,15 @@ async function submit() {
     }
   } catch (err) {
     row.remove();
-    const msg = { session_expired: t.expired, too_many_requests: t.tooFast }[err.message] || t.netErr;
-    aside(msg, "err");
+    if (err.message === "session_expired") {
+      // 服务重启了。保留当前题目，静默开一局新的，把刚才那句重新问一遍。
+      aside(t.expired, "err");
+      const keep = puzzle?.id;
+      await start(keep);
+      $("input").value = text;
+    } else {
+      aside({ too_many_requests: t.tooFast }[err.message] || t.netErr, "err");
+    }
   } finally {
     busy = false; $("ask").disabled = false; hintButton();
     $("input").focus();
@@ -370,15 +377,21 @@ $("hint").onclick = async () => {
     const r = await api("/api/hint", { sessionId: sid });
     hintsUsed = r.hintsUsed;
     aside(t.hintPrefix + r.hint, "hintline");
-  } catch (_) {}
+  } catch (err) {
+    if (err.message === "session_expired") { aside(t.expired, "err"); await start(puzzle?.id); }
+  }
   hintButton();
 };
 $("giveup").onclick = async () => {
   if (over) return;
-  const r = await api("/api/giveup", { sessionId: sid });
-  over = true;
-  $("bottomLabel").textContent = t.bottomLabel;
-  finish(r.solution, t.statGaveUp(r.asked));
+  try {
+    const r = await api("/api/giveup", { sessionId: sid });
+    over = true;
+    $("bottomLabel").textContent = t.bottomLabel;
+    finish(r.solution, t.statGaveUp(r.asked));
+  } catch (err) {
+    if (err.message === "session_expired") { aside(t.expired, "err"); await start(puzzle?.id); }
+  }
 };
 $("share").onclick = async () => {
   // 分享的是「几问 + 判定序列 + 链接」，不含题目，不剧透

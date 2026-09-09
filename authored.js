@@ -11,6 +11,7 @@
 export const AUTHORED = [
   {
     id: "lingchen-chuche",
+    core: "他不是在拉客，是在给地图公司采集道路数据，凌晨没车数据才准。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 3,
     lever: "省略主语", portable: true,
@@ -49,6 +50,7 @@ export const AUTHORED = [
 
   {
     id: "zuili-biandang",
+    core: "他把新鲜的放里面，让顾客先买走快过期的，减少报废。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 2,
     lever: "意图错位", portable: true,
@@ -86,6 +88,7 @@ export const AUTHORED = [
 
   {
     id: "zaotang-waitao",
+    core: "他是澡堂的员工，穿的是工作服，不是来洗澡的。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 2,
     lever: "场所错位", portable: true,
@@ -121,6 +124,7 @@ export const AUTHORED = [
 
   {
     id: "kaochuang-sanben",
+    core: "管理员每天为一位取书不便的老读者提前摆好书，傍晚再归位。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 3,
     lever: "视角错位", portable: true,
@@ -158,6 +162,7 @@ export const AUTHORED = [
 
   {
     id: "erhou-de-ba",
+    core: "遗体上的手术疤位置和病历对不上，她怀疑遗体弄错了。",
     locale: "zh",
     broth: "红汤", genre: "本格", difficulty: 3,
     lever: "细节错位", portable: true,
@@ -195,6 +200,7 @@ export const AUTHORED = [
 
   {
     id: "tuihui-shiyici",
+    core: "他是快递公司的人，在测试退件流程，包裹本来就不需要送到。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 3,
     lever: "意图错位", portable: true,
@@ -232,6 +238,7 @@ export const AUTHORED = [
 
   {
     id: "kongbai-paizi",
+    core: "牌子靠颜色而不是文字起作用，那是托管班的标识色。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 2,
     lever: "功能错位", portable: true,
@@ -269,6 +276,7 @@ export const AUTHORED = [
 
   {
     id: "ershinian-dengta",
+    core: "灯是给镇上的人看的：灯亮就说明独居的看灯人今天还好。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 3,
     lever: "受众错位", portable: true,
@@ -306,6 +314,7 @@ export const AUTHORED = [
 
   {
     id: "shache-taban",
+    core: "刹车踏板的磨损远超三万公里，里程表能调，磨损调不了。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 2,
     lever: "细节错位", portable: true,
@@ -343,6 +352,7 @@ export const AUTHORED = [
 
   {
     id: "zenme-shanglai",
+    core: "那天电梯停运，他爬楼梯准时到了，面试官看的是他遇到麻烦的反应。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 3,
     lever: "情境错位", portable: true,
@@ -380,6 +390,7 @@ export const AUTHORED = [
 
   {
     id: "jugong-menkou",
+    core: "门外人行道上每晚有位老人经过，他在打招呼，监控拍不到那里。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 2,
     lever: "视野错位", portable: true,
@@ -417,6 +428,7 @@ export const AUTHORED = [
 
   {
     id: "san-shuang-kuaizi",
+    core: "摆筷子的是保姆，她自己也住这里；夫妻俩三班倒，作息错开，三个人都活着。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 3,
     lever: "省略主语", portable: false,
@@ -454,6 +466,7 @@ export const AUTHORED = [
 
   {
     id: "jiujiu-de-xin",
+    core: "舅舅是母亲那边的亲戚，父亲是独生子推不出没有舅舅；写信人不懂称谓，是在冒充。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 3,
     lever: "亲属称谓", portable: false,
@@ -491,6 +504,7 @@ export const AUTHORED = [
 
   {
     id: "yi-zhi-shoutao",
+    core: "他只有一只手，所以只需要一只手套。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 2,
     lever: "量词", portable: false,
@@ -528,6 +542,7 @@ export const AUTHORED = [
 
   {
     id: "kaimen-qian-shifen",
+    core: "提前到的是隔壁店老板娘，她替视力不好的老板开灯已经八年了。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 3,
     lever: "省略主语", portable: false,
@@ -565,6 +580,7 @@ export const AUTHORED = [
 
   {
     id: "suidao-de-hua",
+    core: "画在地铁隧道壁上，列车驶过时连成动画，他坐在车里一秒看完。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 4,
     lever: "尺度错位", portable: true,
@@ -603,6 +619,7 @@ export const AUTHORED = [
 
   {
     id: "huo-yijing-mie-le",
+    core: "火是被人扑灭的，那人已经离开；叫醒全楼是为了找出他是谁。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 3,
     lever: "时序错位", portable: true,
@@ -640,6 +657,7 @@ export const AUTHORED = [
 
   {
     id: "zhangzui-kanyiyan",
+    core: "医生看的是牙齿上的氟斑，那是童年饮用水留下的痕迹，和本地不一样。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 3,
     lever: "痕迹错位", portable: true,
@@ -677,6 +695,7 @@ export const AUTHORED = [
 
   {
     id: "chuangtou-de-pingguo",
+    core: "苹果是病人活着的时候自己放的，他是在抢救室去世的，所以没人需要进这间房。",
     locale: "zh",
     broth: "红汤", genre: "本格", difficulty: 3,
     lever: "时序错位", portable: true,
@@ -714,6 +733,7 @@ export const AUTHORED = [
 
   {
     id: "shu-yiben-mei-shao",
+    core: "书架比他走时整齐了，他自己从不摆整齐，所以有人进来过。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 3,
     lever: "增量错位", portable: true,
@@ -751,6 +771,7 @@ export const AUTHORED = [
 
   {
     id: "qici-luyi",
+    core: "他七次都栽在同一个路口，在那里出错的不止他，问题在路口，交管部门因此改了标线。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 3,
     lever: "归因错位", portable: true,
@@ -788,6 +809,7 @@ export const AUTHORED = [
 
   {
     id: "baiwai-de-yizi",
+    core: "那张桌子对着冷风口，摆歪椅子是让客人自然跳过它，比挂牌子自然。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 2,
     lever: "引导错位", portable: true,
@@ -825,6 +847,7 @@ export const AUTHORED = [
 
   {
     id: "ji-gei-ziji",
+    core: "信是他写给三个月后的自己的，约定如果什么都没变就辞职；结果确实什么都没变。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 4,
     lever: "时间错位", portable: true,
@@ -862,6 +885,7 @@ export const AUTHORED = [
 
   {
     id: "diqi-ji-taijie",
+    core: "楼梯有一级会响，熟人都会跨过去，生人不知道；他听到了那一声。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 4,
     lever: "听觉线索", portable: true,
@@ -899,6 +923,7 @@ export const AUTHORED = [
 
   {
     id: "zhuojiao-yingbi",
+    core: "桌子晃，硬币是垫桌脚的；只有这一枚厚度合适，所以要收回来。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 2,
     lever: "功能错位", portable: true,
@@ -936,6 +961,7 @@ export const AUTHORED = [
 
   {
     id: "raolu-de-lingche",
+    core: "原路线那时正好经过小学放学，他绕开是不想让灵车从孩子中间穿过。",
     locale: "zh",
     broth: "红汤", genre: "本格", difficulty: 3,
     lever: "例外错位", portable: true,
@@ -973,6 +999,7 @@ export const AUTHORED = [
 
   {
     id: "chai-le-shexiangtou",
+    core: "被试知道自己被观察所以表现得好；漂亮数据来自被观察，不来自实验措施。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 4,
     lever: "观测反身", portable: true,
@@ -1010,6 +1037,7 @@ export const AUTHORED = [
 
   {
     id: "menkou-de-jiazi",
+    core: "有人来拿，但故意等没人时才来；店员也故意不看，双方心照不宣。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 2,
     lever: "默契错位", portable: true,
@@ -1047,6 +1075,7 @@ export const AUTHORED = [
 
   {
     id: "jibuqi-chaju",
+    core: "计步器是步数乘步长算出来的，两人步幅和设定不同，所以数字不同。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 3,
     lever: "测量错位", portable: true,
@@ -1084,6 +1113,7 @@ export const AUTHORED = [
 
   {
     id: "bafenzhong-de-zhong",
+    core: "调快是为了防拖延；厨房那个要做饭计时，必须准。",
     locale: "zh",
     broth: "清汤", genre: "本格", difficulty: 2,
     lever: "例外错位", portable: true,
